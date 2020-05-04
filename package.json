@@ -1,0 +1,28 @@
+{
+  "name": "react-slider",
+  "version": "1.0.0",
+  "description": "A Slider control buit with and for React",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdelcarlo/react-slider.git"
+  },
+  "keywords": [
+    "slider",
+    "react",
+    "component",
+    "react-component",
+    "input",
+    "form",
+    "range",
+    "ui"
+  ],
+  "author": "Matias Del Carlo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdelcarlo/react-slider/issues"
+  },
+  "homepage": "https://github.com/mdelcarlo/react-slider#readme"
+}
