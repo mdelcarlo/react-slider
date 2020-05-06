@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A Slider control buit with and for React",
   "scripts": {
-    "test": "test"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,15 @@
     "url": "https://github.com/mdelcarlo/react-slider/issues"
   },
   "homepage": "https://github.com/mdelcarlo/react-slider#readme",
-  "private": true
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }
