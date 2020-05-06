@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "description": "A Slider control buit with and for React",
   "scripts": {
-    "lint": "eslint ."
+    "format:file": "prettier --write",
+    "format": "prettier --write \"**/*.js{,on}\" \"**/*.md\" && remark . --output",
+    "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:markdown",
+    "lint:eslint": "eslint .",
+    "lint:markdown": "remark . --frail --quiet",
+    "lint:prettier": "prettier --list-different \"**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -30,10 +35,17 @@
     "packages/*"
   ],
   "dependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.19.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   }
 }
