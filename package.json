@@ -1,6 +1,6 @@
 {
   "name": "react-slider",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "A Slider control buit with and for React",
   "scripts": {
     "test": "test"
@@ -24,5 +24,6 @@
   "bugs": {
     "url": "https://github.com/mdelcarlo/react-slider/issues"
   },
-  "homepage": "https://github.com/mdelcarlo/react-slider#readme"
+  "homepage": "https://github.com/mdelcarlo/react-slider#readme",
+  "private": true
 }
