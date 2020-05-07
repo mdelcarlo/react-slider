@@ -8,7 +8,9 @@
     "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:markdown",
     "lint:eslint": "eslint .",
     "lint:markdown": "remark . --frail --quiet",
-    "lint:prettier": "prettier --list-different \"**/*.js\""
+    "lint:prettier": "prettier --list-different \"**/*.js\"",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -47,5 +49,10 @@
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/react": "^5.3.18"
   }
 }
