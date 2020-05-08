@@ -10,7 +10,8 @@
     "lint:markdown": "remark . --frail --quiet",
     "lint:prettier": "prettier --list-different \"**/*.js\"",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -53,6 +54,8 @@
   "devDependencies": {
     "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-links": "^5.3.18",
-    "@storybook/react": "^5.3.18"
+    "@storybook/react": "^5.3.18",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1"
   }
 }
