@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`snapshot - defaults 1`] = `
+.emotion-0 {
+  left: calc(0% - 8px);
+}
+
+.emotion-0 {
+  left: calc(0% - 8px);
+}
+
+<div>
+  <div
+    class="slider"
+  >
+    <div
+      class="thumb emotion-0"
+    />
+  </div>
+</div>
+`;
