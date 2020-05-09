@@ -1,0 +1,63 @@
+{
+  "name": "react-slider",
+  "version": "0.0.1",
+  "description": "A Slider control buit with and for React",
+  "scripts": {
+    "format:file": "prettier --write",
+    "format": "prettier --write \"**/*.js{,on}\" \"**/*.md\" && remark . --output",
+    "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:markdown",
+    "lint:eslint": "eslint .",
+    "lint:markdown": "remark . --frail --quiet",
+    "lint:prettier": "prettier --list-different \"**/*.js\"",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdelcarlo/react-slider.git"
+  },
+  "keywords": [
+    "slider",
+    "react",
+    "component",
+    "react-component",
+    "input",
+    "form",
+    "range",
+    "ui"
+  ],
+  "author": "Matias Del Carlo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdelcarlo/react-slider/issues"
+  },
+  "homepage": "https://github.com/mdelcarlo/react-slider#readme",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "pretty": "^2.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/react": "^5.3.18",
+    "@testing-library/react": "^10.0.4",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1"
+  }
+}
