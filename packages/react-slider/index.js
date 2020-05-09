@@ -3,6 +3,18 @@ import './styles.css';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 
+function Thumb(props) {
+  return (
+    <div
+      className="thumb"
+      css={{
+        left: `calc(${props.position}% - 8px)`,
+      }}
+      {...props} // <- props contains the `className` prop
+    />
+  );
+}
+
 function Slider({ value, min = 0, max = 100, step = 1 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
@@ -15,6 +27,12 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     return arrayValues;
   }
 
+  function getPercentualValuePosition(value, values) {
+    const valueArrayPosition = values.indexOf(value);
+    if (valueArrayPosition === 0) return 0;
+    return (valueArrayPosition / (values.length - 1)) * 100;
+  }
+
   useEffect(() => {
     console.log('effect');
     setSelectedValue(value || min);
@@ -23,7 +41,7 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
 
   return (
     <div className="slider">
-      <div className="thumb"></div>
+      <Thumb position={getPercentualValuePosition(selectedValue, values)} />
     </div>
   );
 }
