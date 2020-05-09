@@ -10,7 +10,6 @@ function Thumb(props) {
       css={{
         left: `calc(${props.position}% - 8px)`,
       }}
-      {...props} // <- props contains the `className` prop
     />
   );
 }
@@ -33,6 +32,18 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     return (valueArrayPosition / (values.length - 1)) * 100;
   }
 
+  function handleSliderClick(event) {
+    const targetRect = event.target.getClientRects()[0];
+    const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
+    var position = Math.round((values.length - 1) * relativePosition);
+    moveThumbPosition(position);
+  }
+
+  function moveThumbPosition(position) {
+    console.log(position);
+    setSelectedValue(values[position]);
+  }
+
   useEffect(() => {
     console.log('effect');
     setSelectedValue(value || min);
@@ -40,7 +51,7 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
   }, [step, max, min]);
 
   return (
-    <div className="slider">
+    <div className="slider" onClick={handleSliderClick}>
       <Thumb position={getPercentualValuePosition(selectedValue, values)} />
     </div>
   );
