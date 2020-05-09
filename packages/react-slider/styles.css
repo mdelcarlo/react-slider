@@ -1,0 +1,18 @@
+.slider {
+  height: 4px;
+  width: 200px;
+  background: gray;
+  border-radius: 4px;
+  position: relative;
+}
+
+.thumb {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(lightgray, darkgray);
+  top: -6px;
+  left: 75px;
+  border-radius: 50%;
+  cursor: grab;
+}
