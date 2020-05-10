@@ -1,0 +1,5 @@
+- Drag n Drop capabilities
+- Keyboard capabilities
+- Multiple selection
+- Accesibility
+- Speach over
