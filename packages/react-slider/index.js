@@ -41,8 +41,8 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
   };
 
   const moveThumbPosition = position => {
-    console.log(position);
-    setSelectedValue(values[position]);
+    const actualValue = values[position];
+    setSelectedValue(actualValue);
   };
 
   const handleThumbMouseDown = event => {
@@ -55,9 +55,8 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
   };
 
   const handleThumbMove = targetRect => event => {
-    const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
-    if (relativePosition < 0) relativePosition = 0;
-    if (relativePosition > 1) relativePosition = 1;
+    let relativePosition = (event.pageX - targetRect.x) / targetRect.width;
+    if (relativePosition < 0 || relativePosition > 1) return;
     var position = Math.round((values.length - 1) * relativePosition);
     moveThumbPosition(position);
   };
@@ -68,7 +67,6 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
   };
 
   useEffect(() => {
-    console.log('effect');
     setSelectedValue(value || min);
     setValues(getArrayOfValues({ max, min, step }));
   }, [step, max, min]);
