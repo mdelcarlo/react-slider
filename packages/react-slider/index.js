@@ -47,12 +47,11 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
 
   const handleThumbMouseDown = event => {
     const targetRect = event.target.parentNode.getClientRects()[0];
-
-    document.addEventListener('mousemove', handleThumbMove(targetRect));
-    document.addEventListener(
-      'mouseup',
-      handleThumbMouseUp(handleThumbMove(targetRect), handleThumbMouseUp)
-    );
+    const onMouseMove = handleThumbMove(targetRect);
+    const onMouseUp = event =>
+      handleThumbMouseUp(onMouseMove, onMouseUp)(event);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   const handleThumbMove = targetRect => event => {
@@ -63,9 +62,9 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     moveThumbPosition(position);
   };
 
-  const handleThumbMouseUp = (handleThumbMove, handleThumbMouseUp) => event => {
-    document.removeEventListener('mousemove', handleThumbMove);
-    document.removeEventListener('mouseup', handleThumbMouseUp);
+  const handleThumbMouseUp = (onMouseMove, onMouseUp) => event => {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
   };
 
   useEffect(() => {
