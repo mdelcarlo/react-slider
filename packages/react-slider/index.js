@@ -18,6 +18,7 @@ function Thumb(props) {
 function Slider({ value, min = 0, max = 100, step = 1 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
+  const requestRef = React.useRef();
 
   const getArrayOfValues = ({ max, min, step }) => {
     const count = (max - min) / step;
@@ -37,7 +38,9 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     const targetRect = event.target.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
-    moveThumbPosition(position);
+    requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(position)
+    );
   };
 
   const moveThumbPosition = position => {
@@ -58,7 +61,9 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     let relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     if (relativePosition < 0 || relativePosition > 1) return;
     var position = Math.round((values.length - 1) * relativePosition);
-    moveThumbPosition(position);
+    requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(position)
+    );
   };
 
   const handleThumbMouseUp = (onMouseMove, onMouseUp) => event => {
@@ -69,6 +74,7 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
   useEffect(() => {
     setSelectedValue(value || min);
     setValues(getArrayOfValues({ max, min, step }));
+    return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
 
   return (
