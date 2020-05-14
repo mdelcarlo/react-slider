@@ -15,7 +15,15 @@ function Thumb(props) {
   );
 }
 
-function Slider({ value, min = 0, max = 100, step = 1 }) {
+function Slider({
+  className,
+  value,
+  onChange,
+  onChangeCommitted,
+  min = 0,
+  max = 100,
+  step = 1,
+}) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
   const requestRef = React.useRef();
@@ -45,6 +53,10 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
 
   const moveThumbPosition = position => {
     const actualValue = values[position];
+    if (typeof onChange === 'function') {
+      const event = { target: { value: actualValue } };
+      onChange(event);
+    }
     setSelectedValue(actualValue);
   };
 
@@ -66,7 +78,11 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     );
   };
 
-  const handleThumbMouseUp = (onMouseMove, onMouseUp) => event => {
+  const handleThumbMouseUp = (onMouseMove, onMouseUp) => () => {
+    if (typeof onChangeCommitted === 'function') {
+      const event = { target: { value: selectedValue } };
+      onChangeCommitted(event);
+    }
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   };
@@ -76,9 +92,9 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     setValues(getArrayOfValues({ max, min, step }));
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
-
+  const classNames = `slider${className ? ` ${className}` : ''}`;
   return (
-    <div className="slider" onClick={handleSliderClick}>
+    <div className={classNames} onClick={handleSliderClick}>
       <Thumb
         onMouseDown={handleThumbMouseDown}
         position={getPercentualValuePosition(selectedValue, values)}
