@@ -17,9 +17,10 @@ function Thumb(props) {
 
 function Slider({
   className,
-  value,
+  disabled,
   onChange,
   onChangeCommitted,
+  value,
   min = 0,
   max = 100,
   step = 1,
@@ -94,7 +95,7 @@ function Slider({
   }, [step, max, min]);
   const classNames = `slider${className ? ` ${className}` : ''}`;
   return (
-    <div className={classNames} onClick={handleSliderClick}>
+    <div className={classNames} onClick={handleSliderClick} disabled={disabled}>
       <Thumb
         onMouseDown={handleThumbMouseDown}
         position={getPercentualValuePosition(selectedValue, values)}
