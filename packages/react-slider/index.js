@@ -36,6 +36,7 @@ function Slider({
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
   const requestRef = React.useRef();
+  const sliderRef = React.useRef();
 
   const getArrayOfValues = ({ max, min, step }) => {
     const count = (max - min) / step;
@@ -70,7 +71,8 @@ function Slider({
   };
 
   const handleThumbMouseDown = event => {
-    const targetRect = event.target.parentNode.getClientRects()[0];
+    console.log('parent', event.target.parentNode, sliderRef);
+    const targetRect = sliderRef.current.getClientRects()[0];
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
       handleThumbMouseUp(onMouseMove, onMouseUp)(event);
@@ -103,7 +105,12 @@ function Slider({
   }, [step, max, min]);
   const classNames = `slider${className ? ` ${className}` : ''}`;
   return (
-    <div className={classNames} onClick={handleSliderClick} disabled={disabled}>
+    <div
+      ref={sliderRef}
+      className={classNames}
+      onClick={handleSliderClick}
+      disabled={disabled}
+    >
       <Thumb
         selectedValue={selectedValue}
         showLabel={showLabel}
