@@ -5,6 +5,7 @@
   "scripts": {
     "format:file": "prettier --write",
     "format": "prettier --write \"**/*.js{,on}\" \"**/*.md\" && remark . --output",
+    "fresh": "rm -rf node_modules && yarn install",
     "lint": "yarn lint:prettier && yarn lint:eslint && yarn lint:markdown",
     "lint:eslint": "eslint .",
     "lint:markdown": "remark . --frail --quiet",
