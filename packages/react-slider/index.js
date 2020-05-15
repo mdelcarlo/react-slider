@@ -3,15 +3,21 @@ import './styles.css';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 
+function Label(props) {
+  return <div className="slider__label" {...props} />;
+}
+
 function Thumb(props) {
   return (
     <div
-      className="thumb"
+      className="slider__thumb"
       css={{
         left: `calc(${props.position}% - 8px)`,
       }}
       {...props}
-    />
+    >
+      {props.showLabel && <Label>{props.selectedValue}</Label>}
+    </div>
   );
 }
 
@@ -24,6 +30,7 @@ function Slider({
   min = 0,
   max = 100,
   step = 1,
+  showLabel = false,
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
@@ -97,6 +104,8 @@ function Slider({
   return (
     <div className={classNames} onClick={handleSliderClick} disabled={disabled}>
       <Thumb
+        selectedValue={selectedValue}
+        showLabel={showLabel}
         onMouseDown={handleThumbMouseDown}
         position={getPercentualValuePosition(selectedValue, values)}
       />
