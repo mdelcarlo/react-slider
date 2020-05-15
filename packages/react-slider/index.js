@@ -27,6 +27,7 @@ function Slider({
   onChange,
   onChangeCommitted,
   value,
+  defaultValue,
   min = 0,
   max = 100,
   step = 1,
@@ -96,7 +97,7 @@ function Slider({
   };
 
   useEffect(() => {
-    setSelectedValue(value || min);
+    setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
