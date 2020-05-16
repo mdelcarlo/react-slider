@@ -38,3 +38,26 @@ export const MaxSlider = () => (
     }}
   />
 );
+
+export const DisbledSlider = () => (
+  <Slider
+    {...{
+      min: 0,
+      max: 100,
+      step: 50,
+      disabled: true,
+    }}
+  />
+);
+
+export const LabeledSlider = () => (
+  <Slider
+    {...{
+      min: 0,
+      max: 100,
+      step: 10,
+      value: 100,
+      showLabel: true,
+    }}
+  />
+);

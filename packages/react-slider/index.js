@@ -3,22 +3,40 @@ import './styles.css';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 
+function Label(props) {
+  return <div className="slider__label" {...props} />;
+}
+
 function Thumb(props) {
   return (
     <div
-      className="thumb"
+      className="slider__thumb"
       css={{
         left: `calc(${props.position}% - 8px)`,
       }}
       {...props}
-    />
+    >
+      {props.showLabel && <Label>{props.selectedValue}</Label>}
+    </div>
   );
 }
 
-function Slider({ value, min = 0, max = 100, step = 1 }) {
+function Slider({
+  className,
+  disabled,
+  onChange,
+  onChangeCommitted,
+  value,
+  defaultValue,
+  min = 0,
+  max = 100,
+  step = 1,
+  showLabel = false,
+}) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
   const requestRef = React.useRef();
+  const sliderRef = React.useRef();
 
   const getArrayOfValues = ({ max, min, step }) => {
     const count = (max - min) / step;
@@ -45,11 +63,16 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
 
   const moveThumbPosition = position => {
     const actualValue = values[position];
+    if (typeof onChange === 'function') {
+      const event = { target: { value: actualValue } };
+      onChange(event);
+    }
     setSelectedValue(actualValue);
   };
 
   const handleThumbMouseDown = event => {
-    const targetRect = event.target.parentNode.getClientRects()[0];
+    console.log('parent', event.target.parentNode, sliderRef);
+    const targetRect = sliderRef.current.getClientRects()[0];
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
       handleThumbMouseUp(onMouseMove, onMouseUp)(event);
@@ -66,20 +89,31 @@ function Slider({ value, min = 0, max = 100, step = 1 }) {
     );
   };
 
-  const handleThumbMouseUp = (onMouseMove, onMouseUp) => event => {
+  const handleThumbMouseUp = (onMouseMove, onMouseUp) => () => {
+    if (typeof onChangeCommitted === 'function') {
+      const event = { target: { value: selectedValue } };
+      onChangeCommitted(event);
+    }
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   };
 
   useEffect(() => {
-    setSelectedValue(value || min);
+    setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
-
+  const classNames = `slider${className ? ` ${className}` : ''}`;
   return (
-    <div className="slider" onClick={handleSliderClick}>
+    <div
+      ref={sliderRef}
+      className={classNames}
+      onClick={handleSliderClick}
+      disabled={disabled}
+    >
       <Thumb
+        selectedValue={selectedValue}
+        showLabel={showLabel}
         onMouseDown={handleThumbMouseDown}
         position={getPercentualValuePosition(selectedValue, values)}
       />

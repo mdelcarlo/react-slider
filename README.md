@@ -2,6 +2,14 @@
 
 The Slider control for React.
 
+### Contributing
+
+Thanks for your interest in React-Slider. All forms of contribution are welcome, from issue reports to PRs and documentation / write-ups.
+
+Before you open a PR:
+
+In development, run yarn storybook to build (and watch) the project source, and run the storybook server.
+
 ### Development Practices
 
 All source code should be formatted with [Prettier](https://github.com/prettier/prettier).
