@@ -53,7 +53,9 @@ function Slider({
   };
 
   const handleSliderClick = event => {
-    const targetRect = event.target.getClientRects()[0];
+    const target = event.target;
+    if (target.classList[0] !== 'slider') return;
+    const targetRect = target.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
     requestRef.current = requestAnimationFrame(() =>
