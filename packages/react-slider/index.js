@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { keyCode } from './types';
 import './styles.css';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
@@ -63,6 +64,8 @@ function Slider({
     );
   };
 
+  const getThumbPosition = () => values.indexOf(selectedValue);
+
   const moveThumbPosition = position => {
     const actualValue = values[position];
     if (typeof onChange === 'function') {
@@ -71,6 +74,15 @@ function Slider({
     }
     setSelectedValue(actualValue);
   };
+
+  const moveThumbPositionUp = () =>
+    (requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(getThumbPosition + 1)
+    ));
+  const moveThumbPositionDown = () =>
+    (requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(getThumbPosition - 1)
+    ));
 
   const handleThumbMouseDown = event => {
     console.log('parent', event.target.parentNode, sliderRef);
@@ -100,6 +112,21 @@ function Slider({
     document.removeEventListener('mouseup', onMouseUp);
   };
 
+  const handleKeyDown = event => {
+    const eventKeyCode = event.keyCode;
+    if (
+      eventKeyCode === keyCode.arrowLeft ||
+      eventKeyCode === keyCode.arrowDown
+    ) {
+      moveThumbPositionDown();
+    } else if (
+      eventKeyCode === keyCode.arrowRight ||
+      eventKeyCode === keyCode.arrowUp
+    ) {
+      moveThumbPositionUp();
+    }
+  };
+
   useEffect(() => {
     setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
@@ -111,6 +138,8 @@ function Slider({
       ref={sliderRef}
       className={classNames}
       onClick={handleSliderClick}
+      onKeyDown={handleKeyDown}
+      onKeyPress={handleKeyDown}
       disabled={disabled}
     >
       <Thumb
