@@ -1,6 +1,7 @@
 import React from 'react';
 import { linkTo } from '@storybook/addon-links';
 import Slider from '../index';
+import './styles.css';
 
 export default {
   title: 'Slider',

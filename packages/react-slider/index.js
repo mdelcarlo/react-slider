@@ -139,7 +139,6 @@ function Slider({
       className={classNames}
       onClick={handleSliderClick}
       onKeyDown={handleKeyDown}
-      onKeyPress={handleKeyDown}
       disabled={disabled}
     >
       <Thumb
