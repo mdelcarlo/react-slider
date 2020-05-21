@@ -5,7 +5,7 @@ import './styles.css';
 import { jsx } from '@emotion/core';
 
 function Label(props) {
-  return <div className="slider__label" {...props} />;
+  return <div id="slider__label" className="slider__label" {...props} />;
 }
 
 function Thumb(props) {
@@ -145,6 +145,12 @@ function Slider({
       onClick={handleSliderClick}
       onKeyDown={handleKeyDown}
       disabled={disabled}
+      role="slider"
+      aria-labelledby="slider__label"
+      aria-valuemin={min}
+      aria-valuemax={max}
+      aria-valuenow={selectedValue}
+      aria-valuetext={selectedValue}
     >
       <Thumb
         isGrabbed={isGrabbed}
