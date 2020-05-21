@@ -9,11 +9,13 @@ function Label(props) {
 }
 
 function Thumb(props) {
+  const grabbedStyle = props.isGrabbed ? { cursor: 'grabbing' } : {};
   return (
     <div
       className="slider__thumb"
       css={{
         left: `calc(${props.position}% - 8px)`,
+        ...grabbedStyle,
       }}
       {...props}
     >
@@ -36,6 +38,7 @@ function Slider({
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
+  const [isGrabbed, setGrabbed] = useState(false);
   const requestRef = React.useRef();
   const sliderRef = React.useRef();
 
@@ -87,6 +90,7 @@ function Slider({
   const handleThumbMouseDown = event => {
     console.log('parent', event.target.parentNode, sliderRef);
     const targetRect = sliderRef.current.getClientRects()[0];
+    setGrabbed(true);
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
       handleThumbMouseUp(onMouseMove, onMouseUp)(event);
@@ -108,6 +112,7 @@ function Slider({
       const event = { target: { value: selectedValue } };
       onChangeCommitted(event);
     }
+    setGrabbed(false);
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
   };
@@ -142,6 +147,7 @@ function Slider({
       disabled={disabled}
     >
       <Thumb
+        isGrabbed={isGrabbed}
         selectedValue={selectedValue}
         showLabel={showLabel}
         onMouseDown={handleThumbMouseDown}
