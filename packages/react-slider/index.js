@@ -144,13 +144,16 @@ function Slider({
       className={classNames}
       onClick={handleSliderClick}
       onKeyDown={handleKeyDown}
-      disabled={disabled}
       role="slider"
+      aria-orientation="horizontal"
+      disabled={disabled}
       aria-labelledby="slider__label"
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={selectedValue}
       aria-valuetext={selectedValue}
+      aria-readonly={disabled}
+      aria-disabled={disabled}
     >
       <Thumb
         isGrabbed={isGrabbed}
