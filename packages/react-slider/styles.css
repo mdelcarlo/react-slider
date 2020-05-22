@@ -1,7 +1,7 @@
 .slider {
   height: 4px;
   width: 600px;
-  background: gray;
+  background: #ddd;
   border-radius: 4px;
   position: relative;
 }
@@ -15,7 +15,7 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  background: radial-gradient(lightgray, darkgray);
+  background: radial-gradient(#999, #777);
   top: -6px;
   border-radius: 50%;
   cursor: grab;
