@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import { keyCode } from './types';
 import './styles.css';
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 
 function Label(props) {
-  return <div className="slider__label" {...props} />;
+  return <div id="slider__label" className="slider__label" {...props} />;
 }
 
 function Thumb(props) {
+  const grabbedStyle = props.isGrabbed ? { cursor: 'grabbing' } : {};
   return (
     <div
       className="slider__thumb"
       css={{
         left: `calc(${props.position}% - 8px)`,
+        ...grabbedStyle,
+        ...props.focusStyle,
       }}
+      role="slider"
+      tabindex={props.disabled ? -1 : 1}
+      aria-valuemin={props.min}
+      aria-valuenow={props.selectedValue}
+      aria-valuemax={props.max}
+      aria-valuenow={props.selectedValue}
+      aria-valuetext={props.selectedValue}
+      aria-readonly={props.disabled}
+      aria-disabled={props.disabled}
+      disabled={props.disabled}
+      aria-orientation="horizontal"
       {...props}
     >
       {props.showLabel && <Label>{props.selectedValue}</Label>}
@@ -35,8 +50,12 @@ function Slider({
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
+  const [isGrabbed, setGrabbed] = useState(false);
+  const [isFocused, setFocus] = useState(false);
   const requestRef = React.useRef();
   const sliderRef = React.useRef();
+
+  const toggleFocus = () => setFocus(!isFocused);
 
   const getArrayOfValues = ({ max, min, step }) => {
     const count = (max - min) / step;
@@ -63,7 +82,10 @@ function Slider({
     );
   };
 
+  const getThumbPosition = () => values.indexOf(selectedValue);
+
   const moveThumbPosition = position => {
+    if (position < 0 || position > values.length - 1) return;
     const actualValue = values[position];
     if (typeof onChange === 'function') {
       const event = { target: { value: actualValue } };
@@ -72,9 +94,19 @@ function Slider({
     setSelectedValue(actualValue);
   };
 
+  const moveThumbPositionUp = () =>
+    (requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(getThumbPosition() + 1)
+    ));
+  const moveThumbPositionDown = () =>
+    (requestRef.current = requestAnimationFrame(() =>
+      moveThumbPosition(getThumbPosition() - 1)
+    ));
+
   const handleThumbMouseDown = event => {
     console.log('parent', event.target.parentNode, sliderRef);
     const targetRect = sliderRef.current.getClientRects()[0];
+    setGrabbed(true);
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
       handleThumbMouseUp(onMouseMove, onMouseUp)(event);
@@ -96,8 +128,24 @@ function Slider({
       const event = { target: { value: selectedValue } };
       onChangeCommitted(event);
     }
+    setGrabbed(false);
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  const handleKeyDown = event => {
+    const eventKeyCode = event.keyCode;
+    if (
+      eventKeyCode === keyCode.arrowLeft ||
+      eventKeyCode === keyCode.arrowDown
+    ) {
+      moveThumbPositionDown();
+    } else if (
+      eventKeyCode === keyCode.arrowRight ||
+      eventKeyCode === keyCode.arrowUp
+    ) {
+      moveThumbPositionUp();
+    }
   };
 
   useEffect(() => {
@@ -106,21 +154,37 @@ function Slider({
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
   const classNames = `slider${className ? ` ${className}` : ''}`;
+  const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
+
   return (
     <div
       ref={sliderRef}
       className={classNames}
       onClick={handleSliderClick}
+      role="slider"
+      aria-labelledby="slider__label"
       disabled={disabled}
+      aria-readonly={disabled}
+      aria-disabled={disabled}
+      onFocus={toggleFocus}
+      onBlur={toggleFocus}
+      css={{
+        ...focusStyle,
+      }}
     >
       <Thumb
+        min={min}
+        max={max}
+        disabled={disabled}
+        isGrabbed={isGrabbed}
         selectedValue={selectedValue}
         showLabel={showLabel}
         onMouseDown={handleThumbMouseDown}
+        onKeyDown={handleKeyDown}
+        focusStyle={focusStyle}
         position={getPercentualValuePosition(selectedValue, values)}
       />
     </div>
   );
 }
-
 export default Slider;

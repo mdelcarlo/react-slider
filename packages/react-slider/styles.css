@@ -1,7 +1,7 @@
 .slider {
   height: 4px;
   width: 600px;
-  background: gray;
+  background: #ddd;
   border-radius: 4px;
   position: relative;
 }
@@ -15,11 +15,22 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  background: radial-gradient(lightgray, darkgray);
+  background: radial-gradient(#999, #777);
   top: -6px;
-  left: 75px;
   border-radius: 50%;
   cursor: grab;
+}
+
+.slider__thumb:focus {
+  outline: none;
+}
+
+.slider__thumb:active {
+  box-shadow: 0px 0px 5px #999;
+}
+
+.slider__thumb:hover {
+  box-shadow: 0px 0px 5px #999;
 }
 
 .slider__label {
