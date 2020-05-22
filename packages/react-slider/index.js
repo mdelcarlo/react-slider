@@ -16,7 +16,19 @@ function Thumb(props) {
       css={{
         left: `calc(${props.position}% - 8px)`,
         ...grabbedStyle,
+        ...props.focusStyle,
       }}
+      role="slider"
+      tabindex={props.disabled ? -1 : 1}
+      aria-valuemin={props.min}
+      aria-valuenow={props.selectedValue}
+      aria-valuemax={props.max}
+      aria-valuenow={props.selectedValue}
+      aria-valuetext={props.selectedValue}
+      aria-readonly={props.disabled}
+      aria-disabled={props.disabled}
+      disabled={props.disabled}
+      aria-orientation="horizontal"
       {...props}
     >
       {props.showLabel && <Label>{props.selectedValue}</Label>}
@@ -39,8 +51,11 @@ function Slider({
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
   const [isGrabbed, setGrabbed] = useState(false);
+  const [isFocused, setFocus] = useState(false);
   const requestRef = React.useRef();
   const sliderRef = React.useRef();
+
+  const toggleFocus = () => setFocus(!isFocused);
 
   const getArrayOfValues = ({ max, min, step }) => {
     const count = (max - min) / step;
@@ -70,6 +85,7 @@ function Slider({
   const getThumbPosition = () => values.indexOf(selectedValue);
 
   const moveThumbPosition = position => {
+    if (position < 0 || position > values.length - 1) return;
     const actualValue = values[position];
     if (typeof onChange === 'function') {
       const event = { target: { value: actualValue } };
@@ -80,11 +96,11 @@ function Slider({
 
   const moveThumbPositionUp = () =>
     (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition + 1)
+      moveThumbPosition(getThumbPosition() + 1)
     ));
   const moveThumbPositionDown = () =>
     (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition - 1)
+      moveThumbPosition(getThumbPosition() - 1)
     ));
 
   const handleThumbMouseDown = event => {
@@ -138,32 +154,37 @@ function Slider({
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
   const classNames = `slider${className ? ` ${className}` : ''}`;
+  const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
+
   return (
     <div
       ref={sliderRef}
       className={classNames}
       onClick={handleSliderClick}
-      onKeyDown={handleKeyDown}
       role="slider"
-      aria-orientation="horizontal"
-      disabled={disabled}
       aria-labelledby="slider__label"
-      aria-valuemin={min}
-      aria-valuemax={max}
-      aria-valuenow={selectedValue}
-      aria-valuetext={selectedValue}
+      disabled={disabled}
       aria-readonly={disabled}
       aria-disabled={disabled}
+      onFocus={toggleFocus}
+      onBlur={toggleFocus}
+      css={{
+        ...focusStyle,
+      }}
     >
       <Thumb
+        min={min}
+        max={max}
+        disabled={disabled}
         isGrabbed={isGrabbed}
         selectedValue={selectedValue}
         showLabel={showLabel}
         onMouseDown={handleThumbMouseDown}
+        onKeyDown={handleKeyDown}
+        focusStyle={focusStyle}
         position={getPercentualValuePosition(selectedValue, values)}
       />
     </div>
   );
 }
-
 export default Slider;
