@@ -1,5 +1,3 @@
-- Drag n Drop capabilities
-- Keyboard capabilities
 - Multiple selection
-- Accesibility
 - Speach over
+- input keyboard numbers to select value
