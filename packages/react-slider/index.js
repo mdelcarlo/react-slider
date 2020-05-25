@@ -74,8 +74,14 @@ function Slider({
 
   const handleSliderClick = event => {
     const target = event.target;
-    if (target.classList[0] !== 'slider') return;
-    const targetRect = target.getClientRects()[0];
+    if (
+      !(
+        target.classList[0] === 'slider' ||
+        target.classList[0] === 'slider__step'
+      )
+    )
+      return;
+    const targetRect = sliderRef.current.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
     requestRef.current = requestAnimationFrame(() =>
@@ -172,7 +178,7 @@ function Slider({
         key={stepPosition}
         className="slider__step"
         css={{
-          left: `calc(${stepPosition}% - 8px)`,
+          left: `calc(${stepPosition}%)`,
         }}
         onClick={handleSliderClick}
         onKeyDown={handleKeyDown}
