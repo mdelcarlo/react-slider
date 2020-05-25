@@ -51,11 +51,11 @@ function Slider({
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
+  const [stepsPosition, setStepsPosition] = useState([]);
   const [isGrabbed, setGrabbed] = useState(false);
   const [isFocused, setFocus] = useState(false);
   const requestRef = React.useRef();
   const sliderRef = React.useRef();
-
   const toggleFocus = () => setFocus(!isFocused);
 
   const getArrayOfValues = ({ max, min, step }) => {
@@ -149,11 +149,20 @@ function Slider({
     }
   };
 
+  const getStepsPosition = values =>
+    values.map(value => getPercentualValuePosition(value, values));
+
   useEffect(() => {
     setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
     return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
+
+  useEffect(() => {
+    setStepsPosition(getStepsPosition(values));
+    console.log('1', stepsPosition);
+  }, [values]);
+
   const classNames = `slider${className ? ` ${className}` : ''}`;
   const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
   const drawSteps = hasVisibleSteps
@@ -175,6 +184,7 @@ function Slider({
       onBlur={toggleFocus}
       css={{
         ...focusStyle,
+        ...drawSteps,
       }}
     >
       <Thumb
