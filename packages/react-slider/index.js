@@ -165,11 +165,19 @@ function Slider({
 
   const classNames = `slider${className ? ` ${className}` : ''}`;
   const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
-  const drawSteps = hasVisibleSteps
-    ? {
-        /* draw visible steps */
-      }
-    : {};
+  const drawSteps =
+    hasVisibleSteps &&
+    stepsPosition.map(stepPosition => (
+      <a
+        key={stepPosition}
+        className="slider__step"
+        css={{
+          left: `calc(${stepPosition}% - 8px)`,
+        }}
+        onClick={handleSliderClick}
+        onKeyDown={handleKeyDown}
+      ></a>
+    ));
   return (
     <div
       ref={sliderRef}
@@ -184,7 +192,6 @@ function Slider({
       onBlur={toggleFocus}
       css={{
         ...focusStyle,
-        ...drawSteps,
       }}
     >
       <Thumb
@@ -199,6 +206,7 @@ function Slider({
         focusStyle={focusStyle}
         position={getPercentualValuePosition(selectedValue, values)}
       />
+      {drawSteps}
     </div>
   );
 }

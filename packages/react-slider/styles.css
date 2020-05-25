@@ -63,3 +63,10 @@
   background-color: #fafafa;
   top: 36px;
 }
+
+.slider__step {
+  position: absolute;
+  background: #999;
+  height: 4px;
+  width: 4px;
+}

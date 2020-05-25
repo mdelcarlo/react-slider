@@ -62,3 +62,15 @@ export const LabeledSlider = () => (
     }}
   />
 );
+
+export const VisibleStepsSlider = () => (
+  <Slider
+    {...{
+      min: 0,
+      max: 100,
+      step: 10,
+      value: 100,
+      hasVisibleSteps: true,
+    }}
+  />
+);
