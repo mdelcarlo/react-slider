@@ -47,6 +47,7 @@ function Slider({
   max = 100,
   step = 1,
   showLabel = false,
+  hasVisibleSteps = false,
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
@@ -155,7 +156,11 @@ function Slider({
   }, [step, max, min]);
   const classNames = `slider${className ? ` ${className}` : ''}`;
   const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
-
+  const drawSteps = hasVisibleSteps
+    ? {
+        /* draw visible steps */
+      }
+    : {};
   return (
     <div
       ref={sliderRef}
