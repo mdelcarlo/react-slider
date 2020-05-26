@@ -70,4 +70,9 @@
   background: #999;
   height: 4px;
   width: 4px;
+  border-radius: 50%;
+}
+
+.slider__step:hover {
+  box-shadow: 0 0 3px 5px #ccc;
 }
