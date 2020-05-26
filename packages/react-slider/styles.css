@@ -71,6 +71,7 @@
   height: 4px;
   width: 4px;
   border-radius: 50%;
+  transition: 0.5s;
 }
 
 .slider__step:hover {
