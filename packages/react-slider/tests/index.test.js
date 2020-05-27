@@ -17,3 +17,46 @@ test('snapshot - defaults', () => {
   );
   expect(container).toMatchSnapshot();
 });
+
+test('snapshot - disabled', () => {
+  const { container } = render(
+    <Slider
+      {...{
+        min: 0,
+        max: 100,
+        disabled: true,
+      }}
+    />
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('snapshot - labeled', () => {
+  const { container } = render(
+    <Slider
+      {...{
+        min: 0,
+        max: 100,
+        step: 10,
+        value: 100,
+        showLabel: true,
+      }}
+    />
+  );
+  expect(container).toMatchSnapshot();
+});
+
+test('snapshot - hasVisibleSteps', () => {
+  const { container } = render(
+    <Slider
+      {...{
+        min: 0,
+        max: 100,
+        step: 10,
+        value: 100,
+        hasVisibleSteps: true,
+      }}
+    />
+  );
+  expect(container).toMatchSnapshot();
+});
