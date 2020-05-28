@@ -5,7 +5,14 @@ import './styles.css';
 import { jsx } from '@emotion/core';
 
 function Label(props) {
-  return <div id="slider__label" className="slider__label" {...props} />;
+  return (
+    <div
+      id="slider__label"
+      data-testid="slider__label"
+      className="slider__label"
+      {...props}
+    />
+  );
 }
 
 function Thumb(props) {
@@ -177,6 +184,7 @@ function Slider({
       <a
         key={stepPosition}
         className="slider__step"
+        data-testid={`slider__step--${stepPosition}`}
         css={{
           left: `calc(${stepPosition}%)`,
         }}
