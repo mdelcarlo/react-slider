@@ -60,3 +60,38 @@ test('snapshot - hasVisibleSteps', () => {
   );
   expect(container).toMatchSnapshot();
 });
+
+test('click - hasVisibleSteps', () => {
+  const clientRectsMock = jest.fn(() => [
+    {
+      width: 100,
+      x: 30,
+    },
+  ]);
+  const rafMock = jest.fn();
+  global.window.Element.prototype.getClientRects = clientRectsMock;
+  global.window.requestAnimationFrame = rafMock;
+
+  const { container, getByTestId } = render(
+    <Slider
+      {...{
+        min: 0,
+        max: 100,
+        step: 10,
+        value: 100,
+        hasVisibleSteps: true,
+      }}
+    />
+  );
+
+  const sliderStep = getByTestId('slider__step--100');
+  fireEvent(
+    sliderStep,
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+    })
+  );
+  expect(clientRectsMock).toHaveBeenCalled();
+  expect(container).toMatchSnapshot();
+});

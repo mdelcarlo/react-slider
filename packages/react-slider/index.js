@@ -79,7 +79,7 @@ function Slider({
     return (valueArrayPosition / (values.length - 1)) * 100;
   };
 
-  const handleSliderClick = event => {
+  const handleSliderClick = slider => event => {
     const target = event.target;
     if (
       !(
@@ -88,7 +88,7 @@ function Slider({
       )
     )
       return;
-    const targetRect = sliderRef.current.getClientRects()[0];
+    const targetRect = slider.current.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
     requestRef.current = requestAnimationFrame(() =>
@@ -117,9 +117,8 @@ function Slider({
       moveThumbPosition(getThumbPosition() - 1)
     ));
 
-  const handleThumbMouseDown = event => {
-    console.log('parent', event.target.parentNode, sliderRef);
-    const targetRect = sliderRef.current.getClientRects()[0];
+  const handleThumbMouseDown = slider => event => {
+    const targetRect = slider.current.getClientRects()[0];
     setGrabbed(true);
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
@@ -173,7 +172,6 @@ function Slider({
 
   useEffect(() => {
     setStepsPosition(getStepsPosition(values));
-    console.log('1', stepsPosition);
   }, [values]);
 
   const classNames = `slider${className ? ` ${className}` : ''}`;
@@ -188,7 +186,7 @@ function Slider({
         css={{
           left: `calc(${stepPosition}%)`,
         }}
-        onClick={handleSliderClick}
+        onClick={handleSliderClick(sliderRef)}
         onKeyDown={handleKeyDown}
       ></a>
     ));
@@ -196,7 +194,7 @@ function Slider({
     <div
       ref={sliderRef}
       className={classNames}
-      onClick={handleSliderClick}
+      onClick={handleSliderClick(sliderRef)}
       role="slider"
       aria-labelledby="slider__label"
       disabled={disabled}
@@ -215,7 +213,7 @@ function Slider({
         isGrabbed={isGrabbed}
         selectedValue={selectedValue}
         showLabel={showLabel}
-        onMouseDown={handleThumbMouseDown}
+        onMouseDown={handleThumbMouseDown(sliderRef)}
         onKeyDown={handleKeyDown}
         focusStyle={focusStyle}
         position={getPercentualValuePosition(selectedValue, values)}

@@ -1,5 +1,171 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`click - hasVisibleSteps 1`] = `
+.emotion-0 {
+  left: calc(100% - 8px);
+}
+
+.emotion-1 {
+  left: calc(0%);
+}
+
+.emotion-2 {
+  left: calc(10%);
+}
+
+.emotion-3 {
+  left: calc(20%);
+}
+
+.emotion-4 {
+  left: calc(30%);
+}
+
+.emotion-5 {
+  left: calc(40%);
+}
+
+.emotion-6 {
+  left: calc(50%);
+}
+
+.emotion-7 {
+  left: calc(60%);
+}
+
+.emotion-8 {
+  left: calc(70%);
+}
+
+.emotion-9 {
+  left: calc(80%);
+}
+
+.emotion-10 {
+  left: calc(90%);
+}
+
+.emotion-11 {
+  left: calc(100%);
+}
+
+.emotion-0 {
+  left: calc(100% - 8px);
+}
+
+.emotion-1 {
+  left: calc(0%);
+}
+
+.emotion-2 {
+  left: calc(10%);
+}
+
+.emotion-3 {
+  left: calc(20%);
+}
+
+.emotion-4 {
+  left: calc(30%);
+}
+
+.emotion-5 {
+  left: calc(40%);
+}
+
+.emotion-6 {
+  left: calc(50%);
+}
+
+.emotion-7 {
+  left: calc(60%);
+}
+
+.emotion-8 {
+  left: calc(70%);
+}
+
+.emotion-9 {
+  left: calc(80%);
+}
+
+.emotion-10 {
+  left: calc(90%);
+}
+
+.emotion-11 {
+  left: calc(100%);
+}
+
+<div>
+  <div
+    aria-labelledby="slider__label"
+    class="slider emotion-12"
+    role="slider"
+  >
+    <div
+      aria-orientation="horizontal"
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="100"
+      aria-valuetext="100"
+      class="slider__thumb emotion-0"
+      focusstyle="[object Object]"
+      max="100"
+      min="0"
+      position="100"
+      role="slider"
+      selectedvalue="100"
+      tabindex="1"
+    />
+    <a
+      class="slider__step emotion-1"
+      data-testid="slider__step--0"
+    />
+    <a
+      class="slider__step emotion-2"
+      data-testid="slider__step--10"
+    />
+    <a
+      class="slider__step emotion-3"
+      data-testid="slider__step--20"
+    />
+    <a
+      class="slider__step emotion-4"
+      data-testid="slider__step--30"
+    />
+    <a
+      class="slider__step emotion-5"
+      data-testid="slider__step--40"
+    />
+    <a
+      class="slider__step emotion-6"
+      data-testid="slider__step--50"
+    />
+    <a
+      class="slider__step emotion-7"
+      data-testid="slider__step--60"
+    />
+    <a
+      class="slider__step emotion-8"
+      data-testid="slider__step--70"
+    />
+    <a
+      class="slider__step emotion-9"
+      data-testid="slider__step--80"
+    />
+    <a
+      class="slider__step emotion-10"
+      data-testid="slider__step--90"
+    />
+    <a
+      class="slider__step emotion-11"
+      data-testid="slider__step--100"
+    />
+  </div>
+</div>
+`;
+
 exports[`snapshot - defaults 1`] = `
 .emotion-0 {
   left: calc(0% - 8px);
@@ -194,36 +360,47 @@ exports[`snapshot - hasVisibleSteps 1`] = `
     />
     <a
       class="slider__step emotion-1"
+      data-testid="slider__step--0"
     />
     <a
       class="slider__step emotion-2"
+      data-testid="slider__step--10"
     />
     <a
       class="slider__step emotion-3"
+      data-testid="slider__step--20"
     />
     <a
       class="slider__step emotion-4"
+      data-testid="slider__step--30"
     />
     <a
       class="slider__step emotion-5"
+      data-testid="slider__step--40"
     />
     <a
       class="slider__step emotion-6"
+      data-testid="slider__step--50"
     />
     <a
       class="slider__step emotion-7"
+      data-testid="slider__step--60"
     />
     <a
       class="slider__step emotion-8"
+      data-testid="slider__step--70"
     />
     <a
       class="slider__step emotion-9"
+      data-testid="slider__step--80"
     />
     <a
       class="slider__step emotion-10"
+      data-testid="slider__step--90"
     />
     <a
       class="slider__step emotion-11"
+      data-testid="slider__step--100"
     />
   </div>
 </div>
@@ -261,6 +438,7 @@ exports[`snapshot - labeled 1`] = `
     >
       <div
         class="slider__label"
+        data-testid="slider__label"
         id="slider__label"
       >
         100
