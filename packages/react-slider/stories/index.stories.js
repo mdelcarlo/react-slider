@@ -69,7 +69,8 @@ export const VisibleStepsSlider = () => (
       min: 0,
       max: 100,
       step: 10,
-      value: 100,
+      value: 0,
+      showLabel: true,
       hasVisibleSteps: true,
     }}
   />
