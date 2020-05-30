@@ -25,6 +25,7 @@ function Thumb(props) {
         ...grabbedStyle,
         ...props.focusStyle,
       }}
+      data-testid="slider__thumb"
       role="slider"
       tabindex={props.disabled ? -1 : 1}
       aria-valuemin={props.min}
@@ -61,7 +62,6 @@ function Slider({
   const [stepsPosition, setStepsPosition] = useState([]);
   const [isGrabbed, setGrabbed] = useState(false);
   const [isFocused, setFocus] = useState(false);
-  const requestRef = React.useRef();
   const sliderRef = React.useRef();
   const toggleFocus = () => setFocus(!isFocused);
 
@@ -91,9 +91,7 @@ function Slider({
     const targetRect = slider.current.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
-    requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(position)
-    );
+    moveThumbPosition(position);
   };
 
   const getThumbPosition = () => values.indexOf(selectedValue);
@@ -108,14 +106,8 @@ function Slider({
     setSelectedValue(actualValue);
   };
 
-  const moveThumbPositionUp = () =>
-    (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition() + 1)
-    ));
-  const moveThumbPositionDown = () =>
-    (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition() - 1)
-    ));
+  const moveThumbPositionUp = () => moveThumbPosition(getThumbPosition() + 1);
+  const moveThumbPositionDown = () => moveThumbPosition(getThumbPosition() - 1);
 
   const handleThumbMouseDown = slider => event => {
     const targetRect = slider.current.getClientRects()[0];
@@ -131,9 +123,7 @@ function Slider({
     let relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     if (relativePosition < 0 || relativePosition > 1) return;
     var position = Math.round((values.length - 1) * relativePosition);
-    requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(position)
-    );
+    moveThumbPosition(position);
   };
 
   const handleThumbMouseUp = (onMouseMove, onMouseUp) => () => {
@@ -149,13 +139,13 @@ function Slider({
   const handleKeyDown = event => {
     const eventKeyCode = event.keyCode;
     if (
-      eventKeyCode === keyCode.arrowLeft ||
-      eventKeyCode === keyCode.arrowDown
+      eventKeyCode === keyCode.ArrowLeft ||
+      eventKeyCode === keyCode.ArrowDown
     ) {
       moveThumbPositionDown();
     } else if (
-      eventKeyCode === keyCode.arrowRight ||
-      eventKeyCode === keyCode.arrowUp
+      eventKeyCode === keyCode.ArrowRight ||
+      eventKeyCode === keyCode.ArrowUp
     ) {
       moveThumbPositionUp();
     }
@@ -167,7 +157,6 @@ function Slider({
   useEffect(() => {
     setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
-    return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
 
   useEffect(() => {

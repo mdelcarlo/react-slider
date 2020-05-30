@@ -1,8 +1,8 @@
 const keyCode = {
-  arrowLeft: 37,
-  arrowUp: 38,
-  arrowRight: 39,
-  arrowDown: 40,
+  ArrowLeft: 37,
+  ArrowUp: 38,
+  ArrowRight: 39,
+  ArrowDown: 40,
   0: 48,
   1: 49,
   2: 50,
