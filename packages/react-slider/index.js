@@ -27,7 +27,7 @@ function Thumb(props) {
       }}
       data-testid="slider__thumb"
       role="slider"
-      tabindex={props.disabled ? -1 : 1}
+      tabIndex={props.disabled ? -1 : 1}
       aria-valuemin={props.min}
       aria-valuenow={props.selectedValue}
       aria-valuemax={props.max}
