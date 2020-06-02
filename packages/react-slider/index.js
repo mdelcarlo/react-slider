@@ -5,7 +5,14 @@ import './styles.css';
 import { jsx } from '@emotion/core';
 
 function Label(props) {
-  return <div id="slider__label" className="slider__label" {...props} />;
+  return (
+    <div
+      id="slider__label"
+      data-testid="slider__label"
+      className="slider__label"
+      {...props}
+    />
+  );
 }
 
 function Thumb(props) {
@@ -18,8 +25,9 @@ function Thumb(props) {
         ...grabbedStyle,
         ...props.focusStyle,
       }}
+      data-testid="slider__thumb"
       role="slider"
-      tabindex={props.disabled ? -1 : 1}
+      tabIndex={props.disabled ? -1 : 1}
       aria-valuemin={props.min}
       aria-valuenow={props.selectedValue}
       aria-valuemax={props.max}
@@ -47,14 +55,14 @@ function Slider({
   max = 100,
   step = 1,
   showLabel = false,
+  hasVisibleSteps = false,
 }) {
   const [selectedValue, setSelectedValue] = useState('');
   const [values, setValues] = useState([]);
+  const [stepsPosition, setStepsPosition] = useState([]);
   const [isGrabbed, setGrabbed] = useState(false);
   const [isFocused, setFocus] = useState(false);
-  const requestRef = React.useRef();
   const sliderRef = React.useRef();
-
   const toggleFocus = () => setFocus(!isFocused);
 
   const getArrayOfValues = ({ max, min, step }) => {
@@ -71,15 +79,19 @@ function Slider({
     return (valueArrayPosition / (values.length - 1)) * 100;
   };
 
-  const handleSliderClick = event => {
+  const handleSliderClick = slider => event => {
     const target = event.target;
-    if (target.classList[0] !== 'slider') return;
-    const targetRect = target.getClientRects()[0];
+    if (
+      !(
+        target.classList[0] === 'slider' ||
+        target.classList[0] === 'slider__step'
+      )
+    )
+      return;
+    const targetRect = slider.current.getClientRects()[0];
     const relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     var position = Math.round((values.length - 1) * relativePosition);
-    requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(position)
-    );
+    moveThumbPosition(position);
   };
 
   const getThumbPosition = () => values.indexOf(selectedValue);
@@ -94,18 +106,11 @@ function Slider({
     setSelectedValue(actualValue);
   };
 
-  const moveThumbPositionUp = () =>
-    (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition() + 1)
-    ));
-  const moveThumbPositionDown = () =>
-    (requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(getThumbPosition() - 1)
-    ));
+  const moveThumbPositionUp = () => moveThumbPosition(getThumbPosition() + 1);
+  const moveThumbPositionDown = () => moveThumbPosition(getThumbPosition() - 1);
 
-  const handleThumbMouseDown = event => {
-    console.log('parent', event.target.parentNode, sliderRef);
-    const targetRect = sliderRef.current.getClientRects()[0];
+  const handleThumbMouseDown = slider => event => {
+    const targetRect = slider.current.getClientRects()[0];
     setGrabbed(true);
     const onMouseMove = handleThumbMove(targetRect);
     const onMouseUp = event =>
@@ -118,9 +123,7 @@ function Slider({
     let relativePosition = (event.pageX - targetRect.x) / targetRect.width;
     if (relativePosition < 0 || relativePosition > 1) return;
     var position = Math.round((values.length - 1) * relativePosition);
-    requestRef.current = requestAnimationFrame(() =>
-      moveThumbPosition(position)
-    );
+    moveThumbPosition(position);
   };
 
   const handleThumbMouseUp = (onMouseMove, onMouseUp) => () => {
@@ -136,31 +139,51 @@ function Slider({
   const handleKeyDown = event => {
     const eventKeyCode = event.keyCode;
     if (
-      eventKeyCode === keyCode.arrowLeft ||
-      eventKeyCode === keyCode.arrowDown
+      eventKeyCode === keyCode.ArrowLeft ||
+      eventKeyCode === keyCode.ArrowDown
     ) {
       moveThumbPositionDown();
     } else if (
-      eventKeyCode === keyCode.arrowRight ||
-      eventKeyCode === keyCode.arrowUp
+      eventKeyCode === keyCode.ArrowRight ||
+      eventKeyCode === keyCode.ArrowUp
     ) {
       moveThumbPositionUp();
     }
   };
 
+  const getStepsPosition = values =>
+    values.map(value => getPercentualValuePosition(value, values));
+
   useEffect(() => {
     setSelectedValue(value || defaultValue || min);
     setValues(getArrayOfValues({ max, min, step }));
-    return () => cancelAnimationFrame(requestRef.current);
   }, [step, max, min]);
+
+  useEffect(() => {
+    setStepsPosition(getStepsPosition(values));
+  }, [values]);
+
   const classNames = `slider${className ? ` ${className}` : ''}`;
   const focusStyle = isFocused ? { boxShadow: '0px 0px 5px #333;' } : {};
-
+  const drawSteps =
+    hasVisibleSteps &&
+    stepsPosition.map(stepPosition => (
+      <a
+        key={stepPosition}
+        className="slider__step"
+        data-testid={`slider__step--${stepPosition}`}
+        css={{
+          left: `calc(${stepPosition}%)`,
+        }}
+        onClick={handleSliderClick(sliderRef)}
+        onKeyDown={handleKeyDown}
+      ></a>
+    ));
   return (
     <div
       ref={sliderRef}
       className={classNames}
-      onClick={handleSliderClick}
+      onClick={handleSliderClick(sliderRef)}
       role="slider"
       aria-labelledby="slider__label"
       disabled={disabled}
@@ -179,11 +202,12 @@ function Slider({
         isGrabbed={isGrabbed}
         selectedValue={selectedValue}
         showLabel={showLabel}
-        onMouseDown={handleThumbMouseDown}
+        onMouseDown={handleThumbMouseDown(sliderRef)}
         onKeyDown={handleKeyDown}
         focusStyle={focusStyle}
         position={getPercentualValuePosition(selectedValue, values)}
       />
+      {drawSteps}
     </div>
   );
 }
